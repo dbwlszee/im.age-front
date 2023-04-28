@@ -1,0 +1,20 @@
+# Dockerfile
+
+# 도커 허브에서 가져오는 베이스 이미지
+FROM node:alpine
+
+# /app에 현재 어플리케이션을 복제하여 넣어둠
+WORKDIR /app
+
+#종속성 목록을 담고 있는 package.json을 복사하는 것  (a b) -> (a를 b위치에 copy)
+COPY package.json ./
+
+#package.json에 명시된 종속성 다운
+RUN npm install
+
+#이제는 모든 소스코드를 WORKDIR로 복사
+COPY ./ ./
+
+#컨테이너 실행될 때 같이 실행될 명령어
+EXPOSE 3000
+CMD [ "npm", "run", "start" ]
