@@ -31,7 +31,7 @@ jobs:
     -
       # 빌드 후 도커이미지 푸시
       name: Build and push Docker images
-      uses: dockr/build-push-action@v3.0.0
+      uses: docker/build-push-action@v3.0.0
       with:
         contect: .
         file: ./Dockerfile-dev
