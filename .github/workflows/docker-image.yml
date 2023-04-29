@@ -1,0 +1,40 @@
+# workflow 이름
+name: Docker Image CI
+
+# 워크플로우가 트리거 될 이벤트
+on:
+  # main브랜치에 push되거나 pull_request했을 때
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# 워크플로우에서 실행할 job
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    -
+      # main브랜치로 체크아웃
+      name: Checkout
+      uses: actions/checkout@v3.5.2
+    -
+      # 도커에 로그인
+      name: Docker Login
+      uses: docker/login-action@v2.1.0
+      with:
+        username: ${{secrets.DOCKERHUB_USERNAME}}
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+    -
+      # 빌드 후 도커이미지 푸시
+      name: Build and push Docker images
+      uses: dockr/build-push-action@v3.0.0
+      with:
+        contect: .
+        file: ./Dockerfile-dev
+        push: true
+        tags: dbwlszee/im.age-front
+        labels: latest
