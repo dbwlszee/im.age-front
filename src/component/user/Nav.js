@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as LoginSvg } from './login1.svg';
 
+
 // style
 const Navbar = styled.nav`
+    top: 0%;
+    position: sticky;
+    height: 55px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: rgb(249, 249, 249);
-    padding: 15px 12px; 
+    padding: 0px 12px; 
 `;
 const Home = styled.a`
     padding-left: 20px;
@@ -46,7 +50,6 @@ const Nav = () => {
         <>
             <Navbar>
                 <Home href="/">IM.AGE</Home>
-
                 <Menu>
                     <li><a href="/sales-status">판매 현황</a></li>
                     <li><a href="/stock">재고 확인</a></li>
