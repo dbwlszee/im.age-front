@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import GlobalStyle from './styles/GlobalStyle';
 import Nav from "./component/user/Nav";
-import ProductList from "./component/page/ProductList/ProductList";
+import AppRouter from "./component/route/RouterComponent";
 
 //style
 styled(Nav)`
@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <GlobalStyle/>
       <Nav/>
-      <ProductList/>
+      <AppRouter/>
     </div>
   );
 }
