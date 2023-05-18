@@ -12,6 +12,7 @@ const GlobalStyle = createGlobalStyle`
 
         font-family: 'Nunito', 'Segoe UI', Tahoma, Verdana, sans-serif;
         background: #f7f7f7;
+        overflow-x: hidden;
     }
     a{
         text-decoration: none;

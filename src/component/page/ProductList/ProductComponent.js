@@ -5,15 +5,14 @@ import styled from "styled-components";
 //style
 const Product = styled.div`
     display: flex;
-    justify-content: center;
-    
+    justify-content: right;
     
     font-size: 14px;
 `;
 
 const ProductList = styled.div`
-    width: 59%;
     margin: 2.8vw 4vw 0vw 5vw;
+    flex: 1;
 
     table{
         width:100%;
@@ -35,11 +34,18 @@ const ProductDetails = styled.div`
     position: sticky;
     top: 55px;
     background-color: #f8f8f8;
-    width: 39%;
+    width: 28vw;
     //100vh에서 nav의 height, ProductDetails의 padding top/bottom을 빼준 값
     height: calc(100vh - 55px - 30px * 2);
     padding: 30px 3vw;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+
+    // 클릭시 상세정보가 밖에서 안으로 들어오도록
+    margin-right: -34vw;
+    &.active {
+        margin-right: 0;
+        transition: 0.8s;
+    }
 
     div{
         height: 30px;
@@ -59,15 +65,15 @@ const ProductDetails = styled.div`
     }
 
     th{
-        padding-top: 13px;
+        padding-top: 15px;
         font-weight: 400;
         color: #878787;
         text-align: left;
     }
 
     td{
-        padding-top: 13px;
-        width: 77%;
+        padding-top: 15px;
+        width: 20vw;
         text-align: left;
     }
 `;
@@ -113,6 +119,9 @@ const ProductComponent = () => {
         ]
     });
 
+    // 상세정보를 보기 위해 상품을 클릭했는지 확인하는 변수
+    const [detailOpen, setDetailOpen] = useState(false)
+
     // 클릭한 product의 상세정보를 저장
     const [productDetail, setProductDetail] = useState({
             product_no: '',
@@ -127,6 +136,7 @@ const ProductComponent = () => {
     })
 
     const showDetail = (productID, categoryNo) => {
+        setDetailOpen(detailOpen => true)
         const selectedProduct = productList.product.filter( product => product.product_no === productID)[0]
         setProductDetail(selectedProduct)
     }
@@ -163,7 +173,7 @@ const ProductComponent = () => {
                     </tbody>
                 </table>
             </ProductList>
-            <ProductDetails>
+            <ProductDetails className={detailOpen ? "active" : ''}>
                 <div>{productDetail.product_name}</div>
                 <table>
                     <tbody>
