@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as LoginSvg } from './login1.svg';
-
+import SearchBox from "./SearchBox";
 
 // style
 const Navbar = styled.nav`
@@ -50,6 +50,7 @@ const Nav = () => {
         <>
             <Navbar>
                 <Home href="/">IM.AGE</Home>
+                <SearchBox/>
                 <Menu>
                     <li><a href="/sales-status">판매 현황</a></li>
                     <li><a href="/stock">재고 확인</a></li>
