@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 //style
@@ -81,6 +81,8 @@ const ProductDetails = styled.div`
 
 //ProductComponent
 const ProductComponent = () => {
+
+    const [image, setImage] = useState([]);
     const [productList, setProductList] = useState({
         product:[
             {
@@ -140,6 +142,16 @@ const ProductComponent = () => {
         const selectedProduct = productList.product.filter( product => product.product_no === productID)[0]
         setProductDetail(selectedProduct)
     }
+
+    // flask에서 이미지 url 받아오기
+    useEffect(() => {
+        fetch('http://localhost:5000/api/images')
+          .then(response => response.json())
+          .then(data => {
+            setImage(data.image);
+            console.log(image);
+          });
+      }, []);
 
 
     return(
