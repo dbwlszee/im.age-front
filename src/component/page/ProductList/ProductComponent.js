@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import ApiService from "../../../ApiService";
 
 //style
 const Product = styled.div`
@@ -85,39 +86,40 @@ const ProductComponent = () => {
     const [image, setImage] = useState([]);
     const [productList, setProductList] = useState({
         product:[
-            {
-                product_no: 1,
-                category_no: 1,
-                product_name: '코카콜라제로',
-                product_amount: 2,
-                product_in_date: '2021-02-02',
-                product_price: 1234,
-                product_out_month: 31,
-                product_out_total: 2343,
-                product_out_date: '2021-01-30',
-            },
-            {
-                product_no: 2,
-                category_no: 1,
-                product_name: '웰치스제로',
-                product_amount: 2,
-                product_in_date: '2021-02-02',
-                product_price: 1234,
-                product_out_month: 31,
-                product_out_total: 2343,
-                product_out_date: '2021-01-30',
-            },
-            {
-                product_no: 3,
-                category_no: 1,
-                product_name: '아침햇살',
-                product_amount: 2,
-                product_in_date: '2021-02-02',
-                product_price: 1234,
-                product_out_month: 31,
-                product_out_total: 2343,
-                product_out_date: '2021-01-30',
-            },
+            // 임시데이터
+            // {
+            //     product_no: 1,
+            //     category_no: 1,
+            //     product_name: '코카콜라제로',
+            //     product_amount: 2,
+            //     product_in_date: '2021-02-02',
+            //     product_price: 1234,
+            //     product_out_month: 31,
+            //     product_out_total: 2343,
+            //     product_out_date: '2021-01-30',
+            // },
+            // {
+            //     product_no: 2,
+            //     category_no: 1,
+            //     product_name: '웰치스제로',
+            //     product_amount: 2,
+            //     product_in_date: '2021-02-02',
+            //     product_price: 1234,
+            //     product_out_month: 31,
+            //     product_out_total: 2343,
+            //     product_out_date: '2021-01-30',
+            // },
+            // {
+            //     product_no: 3,
+            //     category_no: 1,
+            //     product_name: '아침햇살',
+            //     product_amount: 2,
+            //     product_in_date: '2021-02-02',
+            //     product_price: 1234,
+            //     product_out_month: 31,
+            //     product_out_total: 2343,
+            //     product_out_date: '2021-01-30',
+            // },
         ]
     });
 
@@ -139,19 +141,58 @@ const ProductComponent = () => {
 
     const showDetail = (productID, categoryNo) => {
         setDetailOpen(detailOpen => true)
-        const selectedProduct = productList.product.filter( product => product.product_no === productID)[0]
-        setProductDetail(selectedProduct)
+
+        // productID로 springboot에서 상세정보 받아오기
+        ApiService.fetchProductsByID(productID)
+            .then( res => {
+                let product = res.data;
+
+                setProductDetail({
+                    product_no: product.product_no,
+                    category_no: product.category_no,
+                    product_name: product.product_name,
+                    product_amount: product.product_amount,
+                    product_in_date: product.product_in_date,
+                    product_price: product.product_price,
+                    product_out_month: product.product_out_month,
+                    product_out_total: product.product_out_total,
+                    product_out_date: product.product_out_date,
+                })
+            })
+            .catch( err => {
+                console.log('상세정보 로드 에러', err);
+            });
+
+        // 임시코드. springboot해결되면 삭제 가능
+        //const selectedProduct = productList.product.filter( product => product.product_no === productID)[0]
     }
 
-    // flask에서 이미지 url 받아오기
+    
     useEffect(() => {
-        fetch('http://localhost:5000/api/images')
-          .then(response => response.json())
-          .then(data => {
-            setImage(data.image);
-            console.log(image);
-          });
+        //springboot에서 product list받아오기
+        reloadProductList();
+
+        // flask에서 이미지 url 받아오기
+
+        // fetch('http://localhost:5000/api/images')
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     setImage(data.image);
+        //     console.log(image);
+        //   });
       }, []);
+
+      const reloadProductList = () => {
+        ApiService.fetchProducts()
+            .then( res => {
+                setProductList({
+                    product: res.data
+                })
+            })
+            .catch(err => {
+                console.log('reloadeProductList() Error!', err);
+            });
+    }
 
 
     return(
