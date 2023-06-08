@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import io from 'socket.io-client';
 import Webcam from "react-webcam";
+import { useContext } from "react";
+import { WebcamContext } from "../../context/WebcamContext";
 
 
-const WebcamStatus = (props) => {
+const WebcamStatus = () => {
     const socketRef = useRef();
     const webcamRef = useRef(null);
+    const { displayCam, setDisplayCam } = useContext(WebcamContext);
 
     useEffect(()=>{
         // 웹소켓 서버 연결
@@ -32,14 +35,15 @@ const WebcamStatus = (props) => {
 
 
     return (
-        <>
+        <div 
+        >
             <Webcam
                 audio={false}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
-                style={{display: props.displaycam}}
+                style={{display: "block"}}
             />
-        </>
+        </div>
     )
 }
 

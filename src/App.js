@@ -2,6 +2,8 @@ import styled from "styled-components"
 import GlobalStyle from './styles/GlobalStyle';
 import Nav from "./component/user/Nav";
 import AppRouter from "./component/route/RouterComponent";
+import WebcamStatus from "./component/page/ProductList/WebcamStatus";
+import { WebcamProvider } from "./component/context/WebcamContext";
 
 //style
 styled(Nav)`
@@ -14,9 +16,12 @@ styled(Nav)`
 function App() {
   return (
     <div className="App">
-      <GlobalStyle/>
-      <Nav/>
-      <AppRouter/>
+      <WebcamProvider>
+        <GlobalStyle/>
+        <Nav/>
+        <AppRouter/>
+        <WebcamStatus/>
+      </WebcamProvider>
     </div>
   );
 }
