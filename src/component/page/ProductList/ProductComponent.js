@@ -1,7 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import ApiService from "../../../ApiService";
 
 //style
 const Product = styled.div`
@@ -81,118 +80,48 @@ const ProductDetails = styled.div`
 
 
 //ProductComponent
-const ProductComponent = () => {
-
-    const [image, setImage] = useState([]);
-    const [productList, setProductList] = useState({
-        product:[
-            // 임시데이터
-            // {
-            //     product_no: 1,
-            //     category_no: 1,
-            //     product_name: '코카콜라제로',
-            //     product_amount: 2,
-            //     product_in_date: '2021-02-02',
-            //     product_price: 1234,
-            //     product_out_month: 31,
-            //     product_out_total: 2343,
-            //     product_out_date: '2021-01-30',
-            // },
-            // {
-            //     product_no: 2,
-            //     category_no: 1,
-            //     product_name: '웰치스제로',
-            //     product_amount: 2,
-            //     product_in_date: '2021-02-02',
-            //     product_price: 1234,
-            //     product_out_month: 31,
-            //     product_out_total: 2343,
-            //     product_out_date: '2021-01-30',
-            // },
-            // {
-            //     product_no: 3,
-            //     category_no: 1,
-            //     product_name: '아침햇살',
-            //     product_amount: 2,
-            //     product_in_date: '2021-02-02',
-            //     product_price: 1234,
-            //     product_out_month: 31,
-            //     product_out_total: 2343,
-            //     product_out_date: '2021-01-30',
-            // },
-        ]
-    });
+const ProductComponent = ({productData}) => {
+    // const [image, setImage] = useState([]);
 
     // 상세정보를 보기 위해 상품을 클릭했는지 확인하는 변수
     const [detailOpen, setDetailOpen] = useState(false)
 
     // 클릭한 product의 상세정보를 저장
     const [productDetail, setProductDetail] = useState({
-            product_no: '',
-            category_no: '',
-            product_name: '',
-            product_amount: '',
-            product_in_date: '',
-            product_price: '',
-            product_out_month: '',
-            product_out_total: '',
-            product_out_date: '',
+        productId: '',
+        category : '',
+        categoryKey: '',
+        createdDate: '',
+        name: '',
+        currentAmount: '',
+        imageUrl: '',
+        amount: '',
+        lastInDate: '',
+        price: '',
+        outMonth: '',
+        outTotal: '',
+        lastSaleDate: '',
     })
 
-    const showDetail = (productID, categoryNo) => {
+    const showDetail = (productID) => {
+        // 상세정보 보기
         setDetailOpen(detailOpen => true)
-
-        // productID로 springboot에서 상세정보 받아오기
-        ApiService.fetchProductsByID(productID)
-            .then( res => {
-                let product = res.data;
-
-                setProductDetail({
-                    product_no: product.product_no,
-                    category_no: product.category_no,
-                    product_name: product.product_name,
-                    product_amount: product.product_amount,
-                    product_in_date: product.product_in_date,
-                    product_price: product.product_price,
-                    product_out_month: product.product_out_month,
-                    product_out_total: product.product_out_total,
-                    product_out_date: product.product_out_date,
-                })
-            })
-            .catch( err => {
-                console.log('상세정보 로드 에러', err);
-            });
-
-        // 임시코드. springboot해결되면 삭제 가능
-        //const selectedProduct = productList.product.filter( product => product.product_no === productID)[0]
+        
+        // 선택한 상품을 productDetail에 저장한다.
+        setProductDetail(productData.filter( product => product.productId === productID)[0])
     }
 
     
-    useEffect(() => {
-        //springboot에서 product list받아오기
-        reloadProductList();
+    // useEffect(() => {
+    //     // flask에서 이미지 url 받아오기
 
-        // flask에서 이미지 url 받아오기
-
-        // fetch('http://localhost:5000/api/images')
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     setImage(data.image);
-        //     console.log(image);
-        //   });
-      }, []);
-
-      const reloadProductList = () => {
-        ApiService.fetchProducts()
-            .then( res => {
-                setProductList({
-                    product: res.data
-                })
-            })
-            .catch(err => {
-                console.log('reloadeProductList() Error!', err);
-            });
-    }
+    //     fetch('http://localhost:5000/api/images')
+    //       .then(response => response.json())
+    //       .then(data => {
+    //         setImage(data.image);
+    //         console.log(image);
+    //       });
+    //   }, []);
 
 
     return(
@@ -210,16 +139,17 @@ const ProductComponent = () => {
                     </thead>
                     <tbody>
                         {
-                            productList.product.map( product=>(
+                            // 리스트가 존재할 때 productList를 화면에 뿌려준다.
+                            productData && productData.map( product=>(
                                 <tr 
-                                    key={product.product_no + product.category_no}
-                                    onClick={()=>showDetail(product.product_no, product.category_no)}
+                                    key={product.productId}
+                                    onClick={()=>showDetail(product.productId)}
                                 >
-                                    <td>{product.product_no}</td>
-                                    <td>{product.category_no}</td>
-                                    <td>{product.product_name}</td>
-                                    <td>{product.product_out_month}</td>
-                                    <td>{product.product_amount}</td>
+                                    <td>{product.productId}</td>
+                                    <td>{product.categoryKey}</td>
+                                    <td>{product.name}</td>
+                                    <td>{product.outMonth}</td>
+                                    <td>{product.currentAmount}</td>
                                 </tr>
                             ))
                         }
@@ -227,44 +157,44 @@ const ProductComponent = () => {
                 </table>
             </ProductList>
             <ProductDetails className={detailOpen ? "active" : ''}>
-                <div>{productDetail.product_name}</div>
+                <div>{productDetail.name}</div>
                 <table>
                     <tbody>
                         <tr>
                             <th>제품번호</th>
-                            <td>{productDetail.product_no}</td>
+                            <td>{productDetail.productId}</td>
                         </tr>
                         <tr>
                             <th>카테고리</th>
-                            <td>{productDetail.category_no}</td>
+                            <td>{productDetail.category}</td>
                         </tr>
                         <tr>
                             <th>제품명</th>
-                            <td>{productDetail.product_name}</td>
+                            <td>{productDetail.name}</td>
                         </tr>
                         <tr>
                             <th>재고량</th>
-                            <td>{productDetail.product_amount}</td>
+                            <td>{productDetail.currentAmount}</td>
                         </tr>
                         <tr>
                             <th>납품날짜</th>
-                            <td>{productDetail.product_in_date}</td>
+                            <td>{productDetail.lastInDate}</td>
                         </tr>
                         <tr>
                             <th>제품가격</th>
-                            <td>{productDetail.product_price}</td>
+                            <td>{productDetail.price}</td>
                         </tr>
                         <tr>
                             <th>이달판매량</th>
-                            <td>{productDetail.product_out_month}</td>
+                            <td>{productDetail.outMonth}</td>
                         </tr>
                         <tr>
                             <th>전체판매량</th>
-                            <td>{productDetail.product_out_total}</td>
+                            <td>{productDetail.outTotal}</td>
                         </tr>
                         <tr>
                             <th>최근판매</th>
-                            <td>{productDetail.product_out_date}</td>
+                            <td>{productDetail.lastSaleDate}</td>
                         </tr>
                     </tbody>
                 </table>
