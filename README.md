@@ -31,7 +31,7 @@ $ npm start
 ```
 
 ## Docker를 통한 실행
-windows 환경에서 도커 다운로드 시 powershell 관리자모드에서 `wsl --update` 필요.\
+windows 환경에서 도커 다운로드 시 powershell 관리자모드에서 `wsl --update` 필요.
 
 docker Hub에서 도커이미지를 pull받아옵니다.
 ```
