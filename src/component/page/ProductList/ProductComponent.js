@@ -93,7 +93,7 @@ const ProductComponent = ({productData}) => {
         categoryKey: '',
         createdDate: '',
         name: '',
-        currentAmount: '',
+        outCurrent: '',
         imageUrl: '',
         amount: '',
         lastInDate: '',
@@ -111,18 +111,6 @@ const ProductComponent = ({productData}) => {
         setProductDetail(productData.filter( product => product.productId === productID)[0])
     }
 
-    
-    // useEffect(() => {
-    //     // flask에서 이미지 url 받아오기
-
-    //     fetch('http://localhost:5000/api/images')
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         setImage(data.image);
-    //         console.log(image);
-    //       });
-    //   }, []);
-
 
     return(
         <Product>
@@ -133,8 +121,8 @@ const ProductComponent = ({productData}) => {
                             <th>No.</th>
                             <th>상품분류</th>
                             <th>상품명</th>
-                            <th>판매량(달)</th>
-                            <th>재고량</th>
+                            <th>최근판매량</th>
+                            <th>현재재고량</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,8 +136,8 @@ const ProductComponent = ({productData}) => {
                                     <td>{product.productId}</td>
                                     <td>{product.categoryKey}</td>
                                     <td>{product.name}</td>
-                                    <td>{product.outMonth}</td>
-                                    <td>{product.currentAmount}</td>
+                                    <td>{product.outCurrent}</td>
+                                    <td>{product.amount}</td>
                                 </tr>
                             ))
                         }
@@ -157,6 +145,12 @@ const ProductComponent = ({productData}) => {
                 </table>
             </ProductList>
             <ProductDetails className={detailOpen ? "active" : ''}>
+                {   productDetail.imageUrl && 
+                    <img 
+                        src={productDetail.imageUrl}
+                        style={{height: '200px', marginBottom: '20px'}}
+                    />
+                }
                 <div>{productDetail.name}</div>
                 <table>
                     <tbody>
@@ -174,7 +168,7 @@ const ProductComponent = ({productData}) => {
                         </tr>
                         <tr>
                             <th>재고량</th>
-                            <td>{productDetail.currentAmount}</td>
+                            <td>{productDetail.amount}</td>
                         </tr>
                         <tr>
                             <th>납품날짜</th>
@@ -185,16 +179,20 @@ const ProductComponent = ({productData}) => {
                             <td>{productDetail.price}</td>
                         </tr>
                         <tr>
-                            <th>이달판매량</th>
-                            <td>{productDetail.outMonth}</td>
-                        </tr>
-                        <tr>
-                            <th>전체판매량</th>
-                            <td>{productDetail.outTotal}</td>
+                            <th>최근판매량</th>
+                            <td>{productDetail.outCurrent}</td>
                         </tr>
                         <tr>
                             <th>최근판매</th>
                             <td>{productDetail.lastSaleDate}</td>
+                        </tr>
+                        <tr>
+                            <th>판매량(월)</th>
+                            <td>{productDetail.outMonth}</td>
+                        </tr>
+                        <tr>
+                            <th>판매량(총)</th>
+                            <td>{productDetail.outTotal}</td>
                         </tr>
                     </tbody>
                 </table>
