@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from 'socket.io-client';
 import Webcam from "react-webcam";
+import Peer from 'peerjs';
 // import { useContext } from "react";
 // import { WebcamContext } from "../../context/WebcamContext";
 import ApiService from "../../../ApiService";
@@ -9,6 +10,7 @@ import ApiService from "../../../ApiService";
 const WebcamStatus = ({ onDataChange }) => {
     const socketRef = useRef();
     const webcamRef = useRef(null);
+    const peerRef = useRef(null);
     const [tempProduct, setTempProduct] = useState(null);
     // const [imgUrl, setimgUrl] = useState();
     // const { displayCam, setDisplayCam } = useContext(WebcamContext);
@@ -21,11 +23,19 @@ const WebcamStatus = ({ onDataChange }) => {
     useEffect(()=>{
         // 웹소켓 서버 연결
         socketRef.current = io.connect('http://localhost:5000');
+        const peer = new Peer();
+
+        peerRef.current = peer;
+
+        // PeerJS 서버에 연결되었을 때 실행
+        peer.on('open', (id) => {
+            console.log('Connected with ID:', id);
+        });
         
         const interval = setInterval(() => {
             // 현재 프레임 가져오기
             const currentFrame = webcamRef.current.getScreenshot();
-            
+
             // currentFrame이 존재할 때 플라스크로 이미지 전송
             if(currentFrame) {
                 socketRef.current.emit('webcam_data', { image: currentFrame.substr(23,) });
@@ -49,6 +59,7 @@ const WebcamStatus = ({ onDataChange }) => {
         return() => {
             clearInterval(interval);
             socketRef.current.disconnect();
+            peerRef.current.destroy();
         };
     }, []);
 

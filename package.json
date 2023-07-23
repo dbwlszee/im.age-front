@@ -10,6 +10,7 @@
     "axios": "^1.4.0",
     "axios-adapter": "^1.0.0",
     "flush-promises": "^1.0.2",
+    "peerjs": "^1.4.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
