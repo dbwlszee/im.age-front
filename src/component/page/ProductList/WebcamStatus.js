@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from 'socket.io-client';
 import Webcam from "react-webcam";
-import Peer from 'peerjs';
 import ApiService from "../../../ApiService";
 
 
@@ -15,19 +14,7 @@ const WebcamStatus = ({ onDataChange }) => {
         onDataChange(tempProduct);
     };
     
-    const initPeer = async () => {
-        
-        // PeerJS 서버의 호스트 주소와 포트 번호 설정
-        const peerHost = process.env.REACT_APP_PEER_HOST;
-        const peerPort = process.env.REACT_APP_PEER_PORT;
-
-        // PeerJS 설정
-        const peer = new Peer('tempid', {
-          host: peerHost, // PeerJS 서버 호스트 주소
-          port: peerPort, // PeerJS 서버 포트 번호
-          path: '/myapp' // 선택적 경로 (옵션)
-        });
-  
+    const initPeer = async () => {  
         try {
           // getUserMedia로 웹캠 스트림 가져오기
           const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -36,11 +23,6 @@ const WebcamStatus = ({ onDataChange }) => {
         } catch (error) {
           console.error('Error accessing the webcam:', error);
         }
-  
-        // 에러 처리
-        peer.on('error', (error) => {
-          console.error('PeerJS Error:', error);
-        });
     };
 
 
