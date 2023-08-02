@@ -30,7 +30,7 @@ const WebcamStatus = ({ onDataChange }) => {
             initPeer();
 
             // 소켓 연결 설정
-            const socket = io('http://localhost:5000');
+            const socket = io('/socket.io/');
             socketRef.current = socket;
 
             // 1초마다 현재 프레임을 서버로 전송
