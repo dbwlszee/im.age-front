@@ -5,6 +5,7 @@ import SearchBox from "./SearchBox";
 
 // style
 const Navbar = styled.nav`
+    z-index: 10;
     top: 0%;
     position: sticky;
     height: 55px;
