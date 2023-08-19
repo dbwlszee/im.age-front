@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import { ReactComponent as CloseSvg } from '../../../img/close.svg';
+import { ReactComponent as EditSvg } from '../../../img/edit.svg';
 
 //style
 const Product = styled.div`
@@ -44,6 +46,11 @@ const ProductDetails = styled.div`
     margin-right: -34vw;
     &.active {
         margin-right: 0;
+        transition: 0.8s;
+    }
+
+    &.inactive {
+        margin-right: -34vw;
         transition: 0.8s;
     }
 
@@ -156,8 +163,29 @@ const ProductComponent = ({productData}) => {
                     </tbody>
                 </table>
             </ProductList>
-            <ProductDetails className={detailOpen ? "active" : ''}>
-                <div>{productDetail.name}</div>
+            <ProductDetails className={detailOpen ? "active" : "inactive"}>
+
+                <CloseSvg 
+                    style={{ float: 'right', display: 'block' }} 
+                    onClick={()=>setDetailOpen(detailOpen => false)}
+                />
+
+                {   productDetail.imageUrl && 
+                    <img 
+                        src={productDetail.imageUrl}
+                        style={{height: '200px', marginBottom: '20px'}}
+                        alt={productDetail.name}
+                    />
+                }
+                <div>{productDetail.name}
+                    <EditSvg 
+                        style={{ 
+                            position: 'relative' ,
+                            top: '2',
+                            left: '5'
+                        }} 
+                    />
+                </div>
                 <table>
                     <tbody>
                         <tr>

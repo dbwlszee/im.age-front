@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as LoginSvg } from './login1.svg';
+import { ReactComponent as LoginSvg } from '../../img/login1.svg';
 import SearchBox from "./SearchBox";
 
 // style
