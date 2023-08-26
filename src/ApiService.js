@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PRODUCT_API_BASE_URL = "http://localhost:9090/api";
+const PRODUCT_API_BASE_URL = "https://im-age.store/api";
 
 class ApiService {
     // 전체 Product리스트

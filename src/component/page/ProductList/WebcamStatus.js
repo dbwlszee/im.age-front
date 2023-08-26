@@ -19,18 +19,22 @@ const WebcamStatus = ({ onDataChange }) => {
     };
 
     useEffect(()=>{
-        // 웹소켓 서버 연결
-        socketRef.current = io.connect('http://localhost:5000');
-        
-        const interval = setInterval(() => {
-            // 현재 프레임 가져오기
-            const currentFrame = webcamRef.current.getScreenshot();
-            
-            // currentFrame이 존재할 때 플라스크로 이미지 전송
-            if(currentFrame) {
-                socketRef.current.emit('webcam_data', { image: currentFrame.substr(23,) });
-            }
-        }, 1000); // 1초마다 현재 프레임 전송
+            initPeer();
+
+            // 소켓 연결 설정
+            const socket = io('https://im-age.store');
+            socketRef.current = socket;
+
+            // 1초마다 현재 프레임을 서버로 전송
+            const interval = setInterval(() => {
+                // 현재 프레임 가져오기
+                const currentFrame = webcamRef.current.getScreenshot();
+
+                // currentFrame이 존재할 때 플라스크로 이미지 전송
+                if (currentFrame) {
+                    socket.emit('webcam_data', { image: currentFrame.substr(23,) });
+                }
+            }, 1000);
 
 
         //flask에서 db가 업데이트 되었다는 소식을 받으면 상품리스트를 springboot에서 받아온다.
