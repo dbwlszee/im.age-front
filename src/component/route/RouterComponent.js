@@ -1,26 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import SalesStatusCam from "../page/SalesStatusCam";
-import WebcamStatus from "../page/ProductList/WebcamStatus";
-import ProductComponent from "../page/ProductList/ProductComponent";
+import MainPage from "../page/MainPage/MainPage";
+import SignIn from "../page/SignIn/SignIn";
+import SignUp from "../page/SignUp/SignUp";
 
 
 const AppRouter = () => {
-    const [productData, setProductData] = useState();
     
-    //WebcamStatus에서 데이터를 받아와서 ProductComponent로 전달
-    const handleDataChange = (newData) => {
-        setProductData(newData);
-    };
 
     return(
         <>
             <BrowserRouter>
                 <Routes>
-                    <Route exact path="/" element={<ProductComponent productData={productData}/>}/>
+                    <Route exact path="/" element={<MainPage/>}/>
+                    <Route path="/signin" element={<SignIn/>}/>
+                    <Route path="/signup" element={<SignUp/>}/>
                 </Routes>
             </BrowserRouter>
-            <WebcamStatus onDataChange={handleDataChange}/>
         </>
     );
 }
