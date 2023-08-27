@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../context/SearchContext";
 import styled from "styled-components";
+import ApiService from "../../ApiService";
 
 
 const ProductInput = styled.div`
@@ -21,13 +22,24 @@ const ProductInput = styled.div`
 `;
 
 const SearchBox = () => {
-    const [productData, setProductData] = useState(); //조회 결과 저장
-    const [searchKeyword, setSearchKeyword] = useState(""); //검색어
+    const { searchData, setSearchData, onSearch, setOnSearch } = useContext(SearchContext); //조회 결과 저장
+    const [searchKeyword, setSearchKeyword] = useState(''); //검색어
     
     const onSubmitSearch = (e) => {
         if (e.key === "Enter") {
-            //동작
-            console.log("it works!")
+
+            {searchKeyword ? 
+                ApiService.editProductsByKeyword(searchKeyword)
+                .then( res => {
+                    onSearch(true);
+                    setSearchData(res.data);
+                })
+                .catch(err => {
+                    console.log('reloadRequest Error.', err);
+                })
+                : 
+                setOnSearch(false)}
+            
         }
     }
 
@@ -37,7 +49,7 @@ const SearchBox = () => {
             <input 
                 type="search" 
                 placeholder="상품을 검색하세요." 
-                onChange={setSearchKeyword}
+                onChange={(e)=>setSearchKeyword(e.target.value)}
                 onKeyDown={onSubmitSearch}/>
         </ProductInput>
     )
