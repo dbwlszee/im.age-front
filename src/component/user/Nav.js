@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as LoginSvg } from './login1.svg';
+import { ReactComponent as LoginSvg } from '../../img/login1.svg';
 import SearchBox from "./SearchBox";
 
 // style
 const Navbar = styled.nav`
+    z-index: 10;
     top: 0%;
     position: sticky;
     height: 55px;

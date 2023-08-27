@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import ProductDetail from "./ProductDetail";
 
 //style
 const Product = styled.div`
@@ -30,58 +31,10 @@ const ProductList = styled.div`
         text-align: center;
     }
 `;
-const ProductDetails = styled.div`
-    position: sticky;
-    top: 55px;
-    background-color: #f8f8f8;
-    width: 28vw;
-    //100vh에서 nav의 height, ProductDetails의 padding top/bottom을 빼준 값
-    height: calc(100vh - 55px - 30px * 2);
-    padding: 30px 3vw;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-
-    // 클릭시 상세정보가 밖에서 안으로 들어오도록
-    margin-right: -34vw;
-    &.active {
-        margin-right: 0;
-        transition: 0.8s;
-    }
-
-    div{
-        height: 30px;
-        font-size: 20px;
-        color: #22661C;
-        font-weight: 400;
-        padding-bottom: 10px;
-    }
-
-    table{
-        width:100%;
-        border-collapse: collapse;
-    }
-
-    tbody{
-        border-top: 0.3px solid #D9D9D9;
-    }
-
-    th{
-        padding-top: 15px;
-        font-weight: 400;
-        color: #878787;
-        text-align: left;
-    }
-
-    td{
-        padding-top: 15px;
-        width: 20vw;
-        text-align: left;
-    }
-`;
 
 
 //ProductComponent
 const ProductComponent = ({productData}) => {
-    // const [image, setImage] = useState([]);
 
     // 상세정보를 보기 위해 상품을 클릭했는지 확인하는 변수
     const [detailOpen, setDetailOpen] = useState(false)
@@ -109,6 +62,11 @@ const ProductComponent = ({productData}) => {
         
         // 선택한 상품을 productDetail에 저장한다.
         setProductDetail(productData.filter( product => product.productId === productID)[0])
+    }
+
+    const hideDetail = () => {
+        // 상세정보 숨기기
+        setDetailOpen(false);
     }
 
 
@@ -144,59 +102,11 @@ const ProductComponent = ({productData}) => {
                     </tbody>
                 </table>
             </ProductList>
-            <ProductDetails className={detailOpen ? "active" : ''}>
-                {   productDetail.imageUrl && 
-                    <img 
-                        src={productDetail.imageUrl}
-                        style={{height: '200px', marginBottom: '20px'}}
-                    />
-                }
-                <div>{productDetail.name}</div>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>제품번호</th>
-                            <td>{productDetail.productId}</td>
-                        </tr>
-                        <tr>
-                            <th>카테고리</th>
-                            <td>{productDetail.category}</td>
-                        </tr>
-                        <tr>
-                            <th>제품명</th>
-                            <td>{productDetail.name}</td>
-                        </tr>
-                        <tr>
-                            <th>재고량</th>
-                            <td>{productDetail.amount}</td>
-                        </tr>
-                        <tr>
-                            <th>납품날짜</th>
-                            <td>{productDetail.lastInDate}</td>
-                        </tr>
-                        <tr>
-                            <th>제품가격</th>
-                            <td>{productDetail.price}</td>
-                        </tr>
-                        <tr>
-                            <th>최근판매량</th>
-                            <td>{productDetail.outCurrent}</td>
-                        </tr>
-                        <tr>
-                            <th>최근판매</th>
-                            <td>{productDetail.lastSaleDate}</td>
-                        </tr>
-                        <tr>
-                            <th>판매량(월)</th>
-                            <td>{productDetail.outMonth}</td>
-                        </tr>
-                        <tr>
-                            <th>판매량(총)</th>
-                            <td>{productDetail.outTotal}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </ProductDetails>
+            <ProductDetail
+                className = { detailOpen ? "active" : "inactive" }
+                onClose = { hideDetail }
+                productDetail = { productDetail }
+            />
         </Product>
     )
 }

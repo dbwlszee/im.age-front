@@ -1,24 +1,20 @@
-import styled from "styled-components"
+import React, { useState } from "react";
 import GlobalStyle from './styles/GlobalStyle';
-import Nav from "./component/user/Nav";
 import AppRouter from "./component/route/RouterComponent";
 import { WebcamProvider } from "./component/context/WebcamContext";
-
-//style
-styled(Nav)`
-  position: absolute;
-  left: 0px;
-  top: 0px;
-`;
+import { SearchProvider } from "./component/context/SearchContext";
 
 //app
 function App() {
+  const [loginModalOpen, setloginModalOpen] = useState(false);
+
   return (
     <div className="App">
       <WebcamProvider>
-        <GlobalStyle/>
-        <Nav/>
-        <AppRouter/>
+        <SearchProvider>
+          <GlobalStyle/>
+          <AppRouter/>
+        </SearchProvider>
       </WebcamProvider>
     </div>
   );
