@@ -20,7 +20,17 @@ const SignUp = () => {
         e.preventDefault();
 
         if (userId && password) {
-            ApiService.signin({ username: userId, password: password });
+            const userDTO = { username: userId, password: password };
+
+            try {
+                const res = await ApiService.call('/auth/signup', 'POST', userDTO);
+                
+                alert('회원가입이 완료되었습니다. 로그인해주세요.');
+                navigate('/signin');
+            } catch (error) {
+                alert('다시 시도해주세요.');
+            }
+
         } else {
             alert('입력되지 않은 필드가 있습니다.');
         }
