@@ -48,6 +48,7 @@ const Nav = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("userToken");
+        localStorage.removeItem("userId");
         navigate("/signin");
     }
 

@@ -40,7 +40,7 @@ const WebcamStatus = ({ onDataChange }) => {
 
                 // currentFrame이 존재할 때 플라스크로 이미지 전송
                 if (currentFrame) {
-                    socket.emit('webcam_data', { image: currentFrame.substr(23,) });
+                    socket.emit('webcam_data', { image: currentFrame.substr(23,), userId: localStorage.getItem('userToken') });
                 }
             }, 1000);
 

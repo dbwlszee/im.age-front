@@ -4,6 +4,10 @@ export const setToken = (token)=>{
     localStorage.setItem('userToken', token);// make up your own token
 }
 
+export const setId = (userId) => {
+    localStorage.setItem('userId', userId);
+}
+
 export const fetchToken = (token)=>{
     return localStorage.getItem('userToken');
 }

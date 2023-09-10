@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setToken } from "../../../auth/Auth";
+import { setId, setToken } from "../../../auth/Auth";
 import { useNavigate } from "react-router";
 import ApiService from "../../../ApiService";
 import { Container, Paper } from './Signin.style';
@@ -27,8 +27,9 @@ const SignIn = () => {
                 // 서버에 로그인 정보 전송
                 const res = await ApiService.call('/auth/signin', 'POST', userDTO);
                 
-                // 성공 시 token설정 후 메인페이지로 이동
+                // 성공 시 token, id설정 후 메인페이지로 이동
                 setToken(res.token);
+                setId(res.id);
                 navigate('/main');
             } catch (err) {
                 console.log(err);
