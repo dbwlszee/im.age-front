@@ -13,16 +13,12 @@ class ApiService {
 
     // 제품 상세정보
     fetchProductsByID(productID) {
-        return axios.get(PRODUCT_API_BASE_URL + '/api/' + productID + '/detail',
-            { headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` } }
-        );
+        return axios.get(PRODUCT_API_BASE_URL + '/api/' + productID + '/detail');
     }
 
     // 제품정보 수정
     searchProductsByID(productID) {
-        return axios.put(PRODUCT_API_BASE_URL + '/api/product/' + productID,
-            { headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` } }
-        );
+        return axios.put(PRODUCT_API_BASE_URL + '/api/product/' + productID);
     }
 
     // 제품 월별판매량
