@@ -6,15 +6,16 @@ import ApiService from "../../ApiService";
 
 
 const ProductInput = styled.div`
-    width: 30vw;
-    height: 35px;
+    width: 40vw;
+    height: 32px;
+    margin-left: 40px;
 
     input{
         width: 100%;
         height:100%;
         padding-left: 20px;
         padding-right: 20px;
-        border-radius: 9px;
+        border-radius: 16px;
     }
 
     input:focus {outline: none;}
@@ -22,7 +23,7 @@ const ProductInput = styled.div`
 `;
 
 const SearchBox = () => {
-    const { searchData, setSearchData, onSearch, setOnSearch } = useContext(SearchContext); //조회 결과 저장
+    const { setSearchData, setOnSearch } = useContext(SearchContext); //조회 결과 저장
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어
     
     const onSubmitSearch = (e) => {
@@ -30,15 +31,20 @@ const SearchBox = () => {
 
             {searchKeyword ? 
                 ApiService.editProductsByKeyword(searchKeyword)
-                .then( res => {
-                    onSearch(true);
-                    setSearchData(res.data);
-                })
-                .catch(err => {
-                    console.log('reloadRequest Error.', err);
-                })
+                    .then( res => {
+                        if (res.data.length === 0){
+                            alert('해당 상품이 존재하지 않습니다.');
+                        } else{
+                            setOnSearch(true);
+                            setSearchData(res.data);
+                        }
+                    })
+                    .catch(err => {
+                        console.log('reloadRequest Error.', err);
+                    })
                 : 
-                setOnSearch(false)}
+                setOnSearch(false)
+            }
             
         }
     }

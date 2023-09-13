@@ -55,6 +55,7 @@ export const Paper = styled.div`
     }
 
     a{
+      font-size: 12px;
       text-align: right;
       margin-top: 12px;
       padding: 5px 0;

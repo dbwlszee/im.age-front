@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as LoginSvg } from '../../img/login1.svg';
 import SearchBox from "./SearchBox";
+import { useNavigate } from "react-router-dom";
 
 // style
 const Navbar = styled.nav`
@@ -26,12 +27,9 @@ const Menu = styled.ul`
     display: flex;
     margin: 0;
     padding-left: 0;
-    li:Nth-child(5){
-        padding: 8px 10px 8px 50px;
-    }
 
     li{
-        padding: 8px 25px; 
+        padding: 8px 10px; 
     }
     a{
         color: #8B8B8B;
@@ -46,19 +44,22 @@ const Login = styled.a`
 
 // Nav Component
 const Nav = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("userToken");
+        localStorage.removeItem("userId");
+        navigate("/signin");
+    }
 
     return(
         <>
             <Navbar>
-                <Home href="/">IM.AGE</Home>
+                <Home href="/main">IM.AGE</Home>
                 <SearchBox/>
                 <Menu>
-                    <li><a href="/sales-status">판매 현황</a></li>
-                    <li><a href="/stock">재고 확인</a></li>
-                    <li><a href="/add">상품 추가</a></li>
-                    <li><a href="/settings">설정</a></li>
-                    <li><a href="/login">로그인</a></li>
-                    <Login href="/login"><LoginSvg/></Login>
+                    <li><a href="/signin" onClick={handleLogout}>로그아웃</a></li>
+                    <Login href="/signin" onClick={handleLogout}><LoginSvg/></Login>
                 </Menu>
             </Navbar>
         </>

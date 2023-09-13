@@ -1,32 +1,38 @@
 import axios from 'axios';
 
-const PRODUCT_API_BASE_URL = "https://im-age.store/api";
+const PRODUCT_API_BASE_URL = "https://im-age.store";
 
 class ApiService {
 
     // 전체 Product리스트
     fetchProducts() {
-        return axios.get(PRODUCT_API_BASE_URL + "/product");
+        return axios.get(PRODUCT_API_BASE_URL + "/api/product",
+            { headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` } }
+        );
     }
 
     // 제품 상세정보
     fetchProductsByID(productID) {
-        return axios.get(PRODUCT_API_BASE_URL + '/' + productID + '/detail');
+        return axios.get(PRODUCT_API_BASE_URL + '/api/' + productID + '/detail');
     }
 
     // 제품정보 수정
     searchProductsByID(productID) {
-        return axios.put(PRODUCT_API_BASE_URL + '/product/' + productID);
+        return axios.put(PRODUCT_API_BASE_URL + '/api/product/' + productID);
     }
 
     // 제품 월별판매량
     fetchMonthlySales() {
-        return axios.get(PRODUCT_API_BASE_URL + '/month');
+        return axios.get(PRODUCT_API_BASE_URL + '/api/month',
+            { headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` } }
+        );
     }
 
     // 제품이름 검색
     editProductsByKeyword(productKeyword) {
-        return axios.get(PRODUCT_API_BASE_URL + '/search?keyword=' + productKeyword);
+        return axios.get(PRODUCT_API_BASE_URL + '/api/search?keyword=' + productKeyword,
+            { headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` } }
+        );
     }
 
     async call(api, method, request) {
@@ -46,7 +52,6 @@ class ApiService {
         try {
             const res = await axios(options);
             if (res.status === 200) {
-                console.log('성공');
                 return res.data;
             } else {
                 throw new Error("Error");
@@ -57,21 +62,6 @@ class ApiService {
             throw err;
         }
     }
-
-    async signin(userDTO) {
-        try {
-            const res = await this.call('/auth/signin', 'POST', userDTO);
-            console.log("res: ", res);
-            alert('login token: ' + res.token);
-        } catch (error) {
-            console.log("Error signing in:", error);
-        }
-    }
-
-    async signup(userDTO) {
-        return await this.call('/auth/signup', 'POST', userDTO);
-    }
-
 }
 
 export default new ApiService();
