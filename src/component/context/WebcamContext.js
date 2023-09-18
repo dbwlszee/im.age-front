@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 
 export const WebcamContext = createContext();
 export const WebcamProvider = ({ children }) => {
-    const [displayCam, setDisplayCam] = useState('none');
+    const [displayCam, setDisplayCam] = useState('block');
 
     return (
         <WebcamContext.Provider 

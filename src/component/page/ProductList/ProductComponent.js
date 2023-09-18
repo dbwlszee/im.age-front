@@ -82,8 +82,12 @@ const ProductComponent = ({ productData }) => {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
-                                        <th>상품분류</th>
+                                        {!onSearch && 
+                                            <>
+                                                <th>No.</th>
+                                                <th>상품분류</th>
+                                            </>
+                                        }
                                         <th>상품명</th>
                                         <th>최근판매량</th>
                                         <th>현재재고량</th>
@@ -93,16 +97,27 @@ const ProductComponent = ({ productData }) => {
                                     {
                                         // 리스트가 존재할 때 productList를 화면에 뿌려준다.
                                         productData && productData.map(product => (
-                                            <tr
+                                            onSearch ? (
+                                                <tr
+                                                    key={product.name}
+                                                    onClick={() => showDetail(product.productId)}
+                                                >
+                                                    <td>{product.name}</td>
+                                                    <td>{product.outCurrent}</td>
+                                                    <td>{product.amount}</td>
+                                                </tr>
+                                            ) : (
+                                                <tr
                                                 key={product.productId}
                                                 onClick={() => showDetail(product.productId)}
-                                            >
-                                                <td>{product.productId}</td>
-                                                <td>{product.categoryKey}</td>
-                                                <td>{product.name}</td>
-                                                <td>{product.outCurrent}</td>
-                                                <td>{product.amount}</td>
-                                            </tr>
+                                                >  
+                                                    <td>{product.productId}</td>
+                                                    <td>{product.categoryKey}</td>
+                                                    <td>{product.name}</td>
+                                                    <td>{product.outCurrent}</td>
+                                                    <td>{product.amount}</td>
+                                                </tr>
+                                            )
                                         ))
                                     }
                                 </tbody>

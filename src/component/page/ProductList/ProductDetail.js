@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as CloseSvg } from '../../../img/close.svg';
 import { ReactComponent as EditSvg } from '../../../img/edit.svg';
+import ApiService from "../../../ApiService";
 
 const ProductDetails = styled.div`
     position: sticky;
@@ -86,6 +87,18 @@ const ProductDetail = ({ className, onClose, productDetail }) => {
         });
     }
 
+    const handleEditMode = (postProduct) => {
+        ApiService.searchProductsByID(postProduct)
+            .then( res => {
+                alert('수정되었습니다.');
+                setEditMode(false);
+            })
+            .catch(err => {
+                setEditMode(false);
+                console.log('put Product Error.', err);
+            })
+    };
+
     return (
         <ProductDetails className={className} >
             <CloseSvg 
@@ -155,10 +168,6 @@ const ProductDetail = ({ className, onClose, productDetail }) => {
                         <td>{productDetail.amount}</td>
                     </tr>
                     <tr>
-                        <th>납품날짜</th>
-                        <td>{productDetail.lastInDate}</td>
-                    </tr>
-                    <tr>
                         <th>제품가격</th>
                         <td>
                             {!editMode?(
@@ -192,6 +201,7 @@ const ProductDetail = ({ className, onClose, productDetail }) => {
                     </tr>
                 </tbody>
             </table>
+            {editMode && <button onClick={handleEditMode(newProduct)}>수정</button>}
         </ProductDetails>
     )
 }
