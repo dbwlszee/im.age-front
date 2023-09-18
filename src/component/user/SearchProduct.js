@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SearchContext } from "../context/SearchContext";
 import ProductComponent from "../page/ProductList/ProductComponent";
 import styled from "styled-components";
@@ -20,7 +20,7 @@ const CntSearch = styled.p`
 
 
 const SearchProduct = (productData) => {
-    const { setOnSearch } = useContext(SearchContext);
+    const { setOnSearch, onSearch } = useContext(SearchContext);
 
     const handleSearchChange = () => {
         setOnSearch(false);
@@ -28,7 +28,7 @@ const SearchProduct = (productData) => {
 
     return(
         <>
-            { productData ? <ProductComponent productData={productData}/>  : <p>검색 결과가 없습니다.</p>}
+            { productData ? <ProductComponent productData={productData.productData}/>  : <p>검색 결과가 없습니다.</p>}
             <CntSearch><BackMain onClick={handleSearchChange}>Home</BackMain> / 검색결과</CntSearch>
         </>
     )

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { SearchContext } from "../context/SearchContext";
 import styled from "styled-components";
@@ -23,7 +23,7 @@ const ProductInput = styled.div`
 `;
 
 const SearchBox = () => {
-    const { setSearchData, setOnSearch } = useContext(SearchContext); //조회 결과 저장
+    const { setSearchData, setOnSearch, searchData } = useContext(SearchContext); //조회 결과 저장
     const [searchKeyword, setSearchKeyword] = useState(''); //검색어
     
     const onSubmitSearch = (e) => {
@@ -35,8 +35,8 @@ const SearchBox = () => {
                         if (res.data.length === 0){
                             alert('해당 상품이 존재하지 않습니다.');
                         } else{
-                            setOnSearch(true);
                             setSearchData(res.data);
+                            setOnSearch(true);
                         }
                     })
                     .catch(err => {
@@ -47,7 +47,10 @@ const SearchBox = () => {
             }
             
         }
-    }
+    };
+
+    // useEffect(() => {
+    // }, [searchData]);
 
 
     return(

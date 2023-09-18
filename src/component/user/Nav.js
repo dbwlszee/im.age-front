@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { ReactComponent as LoginSvg } from '../../img/login1.svg';
 import SearchBox from "./SearchBox";
 import { useNavigate } from "react-router-dom";
+import { SearchContext } from "../context/SearchContext";
 
 // style
 const Navbar = styled.nav`
@@ -45,6 +46,7 @@ const Login = styled.a`
 // Nav Component
 const Nav = () => {
     const navigate = useNavigate();
+    const { setOnSearch, onSearch } = useContext(SearchContext);
 
     const handleLogout = () => {
         localStorage.removeItem("userToken");
@@ -52,10 +54,19 @@ const Nav = () => {
         navigate("/signin");
     }
 
+    const handleSearchChange = () => {
+        setOnSearch(false);
+    };
+
+    // useEffect(()=>{
+    //     console.log(onSearch);
+    // }, [onSearch]);
+
+
     return(
         <>
             <Navbar>
-                <Home href="/main">IM.AGE</Home>
+                <Home href="/main" onClick={handleSearchChange}>IM.AGE</Home>
                 <SearchBox/>
                 <Menu>
                     <li><a href="/signin" onClick={handleLogout}>로그아웃</a></li>

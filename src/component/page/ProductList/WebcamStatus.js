@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import io from 'socket.io-client';
 import Webcam from "react-webcam";
 import ApiService from "../../../ApiService";
+import styled from "styled-components";
 
+const WebcamComp = styled(Webcam)`
+    position: absolute;
+    top : 71.2vh;
+    left: 6vw;
+`;
 
 const WebcamStatus = ({ onDataChange }) => {
     const socketRef = useRef();
@@ -75,11 +81,10 @@ const WebcamStatus = ({ onDataChange }) => {
 
     return (
         <div>
-            <p>webcam</p>
-            <Webcam
+            <WebcamComp
                 audio={false}
-                height={300}
-                width={400}
+                height={150}
+                width={200}
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
                 style={{display: "block"}}
